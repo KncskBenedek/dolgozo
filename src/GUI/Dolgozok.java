@@ -55,10 +55,6 @@ public class Dolgozok extends javax.swing.JFrame {
 
         jLabel2.setText("Fiúk");
 
-        lanyokCBB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1" }));
-
-        fiukCBB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1" }));
-
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Összesítő"));
 
         fiuLanyGrp.add(lanyRDB);
