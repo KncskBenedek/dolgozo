@@ -1,2 +1,2 @@
 [Fiuk:
-, legidősebb:33, összeskor: 77, éve dolgozó: nincs]
+, legidősebb:35, összeskor: 100, éve dolgozó: Róbert]

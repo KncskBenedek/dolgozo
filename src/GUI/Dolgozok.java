@@ -257,7 +257,7 @@ public class Dolgozok extends javax.swing.JFrame {
         if (this.mindkettoCheckB.isSelected()) {
             String[] fiuk = sorok("Fiuk:", DolgozoModel.FIU);
             String[] lanyok = sorok("Fiuk:", DolgozoModel.LANY);
-            szov = Arrays.toString(fiuk) + "\n" + lanyok;
+            szov = Arrays.toString(fiuk) + "\n" + Arrays.toString(lanyok);
 
         } else {
             if (this.fiuRDB.isSelected()) {
@@ -265,7 +265,7 @@ public class Dolgozok extends javax.swing.JFrame {
                 szov = Arrays.toString(fiuk);
 
             } else {
-                String[] lanyok = sorok("Fiuk:", DolgozoModel.LANY);
+                String[] lanyok = sorok("lanyok:", DolgozoModel.LANY);
                 szov = Arrays.toString(lanyok);
 
             }
