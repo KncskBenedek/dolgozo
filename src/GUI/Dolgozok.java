@@ -230,7 +230,9 @@ public class Dolgozok extends javax.swing.JFrame {
     private void init() throws IOException {
         this.dolgozok = new ArrayList<>();
         dolgozokFeltoltes();
-        
+//        for (DolgozoModel dolgozoModel : dolgozok) {
+//            System.out.println(dolgozoModel.toString());
+//        }
     }
 
     /**
