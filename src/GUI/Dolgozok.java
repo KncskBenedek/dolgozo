@@ -1,10 +1,19 @@
 package GUI;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import model.DolgozoModel;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-
 /**
  *
  * @author koncsik.benedek
@@ -14,8 +23,11 @@ public class Dolgozok extends javax.swing.JFrame {
     /**
      * Creates new form Dolgozok
      */
-    public Dolgozok() {
+    List<DolgozoModel> dolgozok;
+    
+    public Dolgozok() throws IOException {
         initComponents();
+        init();
     }
 
     /**
@@ -215,6 +227,12 @@ public class Dolgozok extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void init() throws IOException {
+        this.dolgozok = new ArrayList<>();
+        dolgozokFeltoltes();
+        
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -245,7 +263,11 @@ public class Dolgozok extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Dolgozok().setVisible(true);
+                try {
+                    new Dolgozok().setVisible(true);
+                } catch (IOException ex) {
+                    Logger.getLogger(Dolgozok.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
@@ -273,4 +295,20 @@ public class Dolgozok extends javax.swing.JFrame {
     private javax.swing.JCheckBox mindkettoCheckB;
     private javax.swing.JLabel osszesKorOLBL;
     // End of variables declaration//GEN-END:variables
+
+    private void dolgozokFeltoltes() throws IOException {
+ 
+        Path path = Paths.get("emberek.txt");
+        List<String> sorok = Files.readAllLines(path);
+        sorok.remove(0);
+        for (String sor : sorok) {
+            String[] dolgozoSplit = sor.split(";"); //class-ba 
+            if(dolgozoSplit.length == 3){
+                this.dolgozok.add(new DolgozoModel(dolgozoSplit[0], Integer.parseInt(dolgozoSplit[1]), dolgozoSplit[2].charAt(0)));
+            }else{
+                 this.dolgozok.add(new DolgozoModel(dolgozoSplit[0], Integer.parseInt(dolgozoSplit[1]), dolgozoSplit[2].charAt(0),Integer.parseInt(dolgozoSplit[3]) ));
+            }
+        }
+    }
+
 }

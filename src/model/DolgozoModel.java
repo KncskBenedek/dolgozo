@@ -40,4 +40,10 @@ public class DolgozoModel {
     public char getNeme() {
         return neme;
     }
+
+    @Override
+    public String toString() {
+        return "DolgozoModel{" + "nev=" + nev + ", kor=" + kor + ", neme=" + neme + ", munkToltEv=" + munkToltEv + '}';
+    }
+    
 }
