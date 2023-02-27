@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -188,6 +189,11 @@ public class Dolgozok extends javax.swing.JFrame {
         mindkettoCheckB.setText("Mindkettő nem");
 
         mentBTN.setText("Ment");
+        mentBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mentBTNActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -244,6 +250,43 @@ public class Dolgozok extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_lanyRDBItemStateChanged
+
+    private void mentBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mentBTNActionPerformed
+        Path path = Paths.get("dolgozok.txt");
+        String szov = "";
+        if (this.mindkettoCheckB.isSelected()) {
+            String[] fiuk = sorok("Fiuk:", DolgozoModel.FIU);
+            String[] lanyok = sorok("Fiuk:", DolgozoModel.LANY);
+            szov = Arrays.toString(fiuk) + "\n" + lanyok;
+
+        } else {
+            if (this.fiuRDB.isSelected()) {
+                String[] fiuk = sorok("Fiuk:", DolgozoModel.FIU);
+                szov = Arrays.toString(fiuk);
+
+            } else {
+                String[] lanyok = sorok("Fiuk:", DolgozoModel.LANY);
+                szov = Arrays.toString(lanyok);
+
+            }
+        }
+        try {
+
+            Files.write(path, szov.getBytes());
+        } catch (IOException ex) {
+            Logger.getLogger(Dolgozok.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_mentBTNActionPerformed
+
+    private String[] sorok(String elso, char nem) {
+        String[] sorok = new String[4];
+        sorok[0] = elso + "\n";
+        sorok[1] = "legidősebb:" + legidosebbDolg(nem);
+        sorok[2] = "összeskor: " + osszKor(nem);
+        sorok[3] = "éve dolgozó: " + hatEveDolgozo(nem, 6);
+        return sorok;
+    }
 
     private void init() throws IOException {
         this.dolgozok = new ArrayList<>();
