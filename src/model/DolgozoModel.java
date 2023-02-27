@@ -9,6 +9,10 @@ package model;
  * @author koncsik.benedek
  */
 public class DolgozoModel {
+
+    public static final char LANY = 'L';
+    public static final char FIU = 'F';
+
     private String nev;
     private int kor;
     private char neme;
@@ -45,5 +49,5 @@ public class DolgozoModel {
     public String toString() {
         return "DolgozoModel{" + "nev=" + nev + ", kor=" + kor + ", neme=" + neme + ", munkToltEv=" + munkToltEv + '}';
     }
-    
+
 }

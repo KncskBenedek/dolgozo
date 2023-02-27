@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JLabel;
 import model.DolgozoModel;
 
 /*
@@ -24,7 +25,7 @@ public class Dolgozok extends javax.swing.JFrame {
      * Creates new form Dolgozok
      */
     List<DolgozoModel> dolgozok;
-    
+
     public Dolgozok() throws IOException {
         initComponents();
         init();
@@ -70,7 +71,13 @@ public class Dolgozok extends javax.swing.JFrame {
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Összesítő"));
 
         fiuLanyGrp.add(lanyRDB);
+        lanyRDB.setSelected(true);
         lanyRDB.setText("lány");
+        lanyRDB.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                lanyRDBItemStateChanged(evt);
+            }
+        });
 
         fiuLanyGrp.add(fiuRDB);
         fiuRDB.setText("fiú");
@@ -227,17 +234,82 @@ public class Dolgozok extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void lanyRDBItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_lanyRDBItemStateChanged
+        if (this.lanyRDB.isSelected()) {
+            osszesitoBeallit(DolgozoModel.LANY);
+        } else {
+            osszesitoBeallit(DolgozoModel.FIU);
+        }
+
+    }//GEN-LAST:event_lanyRDBItemStateChanged
+
     private void init() throws IOException {
         this.dolgozok = new ArrayList<>();
         dolgozokFeltoltes();
+        initOsszesito();
 //        for (DolgozoModel dolgozoModel : dolgozok) {
 //            System.out.println(dolgozoModel.toString());
 //        }
     }
 
-    /**
-     * @param args the command line arguments
-     */
+    private void dolgozokFeltoltes() throws IOException {
+
+        Path path = Paths.get("emberek.txt");
+        List<String> sorok = Files.readAllLines(path);
+        sorok.remove(0);
+        for (String sor : sorok) {
+            String[] dolgozoSplit = sor.split(";"); //class-ba 
+            if (dolgozoSplit.length == 3) {
+                this.dolgozok.add(new DolgozoModel(dolgozoSplit[0], Integer.parseInt(dolgozoSplit[1]), dolgozoSplit[2].charAt(0)));
+            } else {
+                this.dolgozok.add(new DolgozoModel(dolgozoSplit[0], Integer.parseInt(dolgozoSplit[1]), dolgozoSplit[2].charAt(0), Integer.parseInt(dolgozoSplit[3])));
+            }
+        }
+    }
+
+    private void initOsszesito() {
+        osszesitoBeallit(DolgozoModel.LANY);
+    }
+
+    private void osszesitoBeallit(char nem) {
+        this.legidosebbOLBL.setText(String.valueOf(legidosebbDolg(nem)));
+        this.osszesKorOLBL.setText(String.valueOf(osszKor(nem)));
+        this.hatEveOLBL.setText(hatEveDolgozo(nem, 6));
+    }
+
+    private int legidosebbDolg(char nem) {
+        int maxKor = this.dolgozok.get(0).getKor();
+        int kor;
+        for (DolgozoModel dolgozo : dolgozok) {
+            kor = dolgozo.getKor();
+            if (kor > maxKor && nem == dolgozo.getNeme()) {
+                maxKor = kor;
+            }
+        }
+        return maxKor;
+    }
+
+    private int osszKor(char nem) {
+        int osszKor = 0;
+        for (DolgozoModel dolgozo : dolgozok) {
+            if (dolgozo.getNeme() == nem) {
+                osszKor += dolgozo.getKor();
+            }
+        }
+        return osszKor;
+    }
+
+    private String hatEveDolgozo(char nem, int ennyiIdeje) {
+        int index = 0;
+        String valasz = "nincs";
+
+        while (index < dolgozok.size() && !(dolgozok.get(index).getMunkToltEv() >= ennyiIdeje && dolgozok.get(index).getNeme() == nem)) {
+            index++;
+        }
+        valasz = index >= dolgozok.size() ? valasz : dolgozok.get(index).getNev();
+        return valasz;
+    }
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -297,20 +369,5 @@ public class Dolgozok extends javax.swing.JFrame {
     private javax.swing.JCheckBox mindkettoCheckB;
     private javax.swing.JLabel osszesKorOLBL;
     // End of variables declaration//GEN-END:variables
-
-    private void dolgozokFeltoltes() throws IOException {
- 
-        Path path = Paths.get("emberek.txt");
-        List<String> sorok = Files.readAllLines(path);
-        sorok.remove(0);
-        for (String sor : sorok) {
-            String[] dolgozoSplit = sor.split(";"); //class-ba 
-            if(dolgozoSplit.length == 3){
-                this.dolgozok.add(new DolgozoModel(dolgozoSplit[0], Integer.parseInt(dolgozoSplit[1]), dolgozoSplit[2].charAt(0)));
-            }else{
-                 this.dolgozok.add(new DolgozoModel(dolgozoSplit[0], Integer.parseInt(dolgozoSplit[1]), dolgozoSplit[2].charAt(0),Integer.parseInt(dolgozoSplit[3]) ));
-            }
-        }
-    }
 
 }
