@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import model.DolgozoModel;
 
@@ -246,7 +248,12 @@ public class Dolgozok extends javax.swing.JFrame {
     private void init() throws IOException {
         this.dolgozok = new ArrayList<>();
         dolgozokFeltoltes();
-        initOsszesito();
+        osszesitoBeallit(DolgozoModel.LANY);
+        this.lanyokCBB.setModel(nevekLista(DolgozoModel.LANY));
+        this.lanyokCBB.setSelectedItem(null);
+        this.fiukCBB.setModel(nevekLista(DolgozoModel.FIU));
+        this.fiukCBB.setSelectedItem(null);
+
 //        for (DolgozoModel dolgozoModel : dolgozok) {
 //            System.out.println(dolgozoModel.toString());
 //        }
@@ -265,10 +272,6 @@ public class Dolgozok extends javax.swing.JFrame {
                 this.dolgozok.add(new DolgozoModel(dolgozoSplit[0], Integer.parseInt(dolgozoSplit[1]), dolgozoSplit[2].charAt(0), Integer.parseInt(dolgozoSplit[3])));
             }
         }
-    }
-
-    private void initOsszesito() {
-        osszesitoBeallit(DolgozoModel.LANY);
     }
 
     private void osszesitoBeallit(char nem) {
@@ -308,6 +311,16 @@ public class Dolgozok extends javax.swing.JFrame {
         }
         valasz = index >= dolgozok.size() ? valasz : dolgozok.get(index).getNev();
         return valasz;
+    }
+
+    private DefaultComboBoxModel nevekLista(char nem) {
+        DefaultComboBoxModel df = new DefaultComboBoxModel<>();
+        for (DolgozoModel dolgozo : this.dolgozok) {
+            if (dolgozo.getNeme() == nem) {
+                df.addElement(dolgozo.getNev());
+            }
+        }
+        return df;
     }
 
     public static void main(String args[]) {
